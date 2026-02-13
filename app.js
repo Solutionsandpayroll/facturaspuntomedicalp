@@ -198,7 +198,10 @@ async function cargarProveedores() {
     try {
         nitLoader.classList.remove('hidden');
         
-        const response = await fetch(`${APPS_SCRIPT_URL}?action=listarProveedores`);
+        const response = await fetch(`${APPS_SCRIPT_URL}?action=listarProveedores`, {
+            method: 'GET',
+            redirect: 'follow'
+        });
         const data = await response.json();
         
         if (data.success && data.proveedores) {
