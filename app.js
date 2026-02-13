@@ -349,12 +349,6 @@ function setupProveedorSelector() {
 async function enviarFormulario(e) {
     e.preventDefault();
     
-    // Validar URL configurada
-    if (APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbxSc6NKLFwGidN7BCCSZdLWRgaDUPI1NfNA-UrhaFwNDdM-93q2v4H29LAVuUpaxKjpHw/exec') {
-        alert('⚠️ Debes configurar la URL del Apps Script en app.js');
-        return;
-    }
-    
     // Deshabilitar botón
     btnEnviar.disabled = true;
     btnEnviarText.textContent = 'Enviando...';
