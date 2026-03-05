@@ -1,7 +1,7 @@
 // ============================================
 // CONFIGURACIÓN - ACTUALIZA ESTA URL DESPUÉS DE PUBLICAR EL APPS SCRIPT
 // ============================================
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxSc6NKLFwGidN7BCCSZdLWRgaDUPI1NfNA-UrhaFwNDdM-93q2v4H29LAVuUpaxKjpHw/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwLuKvNQISPeb23d8_r6k_FxE6tHHpkpYkbS4sLudM0Hh05sH43dFsjyfIfTpPZK0uXZg/exec';
 
 // Umbral para aplicar retenciones
 const UMBRAL_RETENCION = 524000;
@@ -295,16 +295,22 @@ function cargarDatosProveedor(proveedor) {
         nombreContable: proveedor.nombre || '',
         plazo: proveedor.plazo || 30
     };
-    
+
     // Mostrar el tipo de retención y las tarifas
     aplicaRfteInput.value = datosDescuento.retencionFte;
     tarifaInput.value = `${datosDescuento.tarifaRetencion}% / ${datosDescuento.tarifaIca}‰`;
-    
+
     // Actualizar estado
     nitStatus.textContent = `✓ ${datosDescuento.retencionFte} - Plazo: ${datosDescuento.plazo} días`;
     nitStatus.classList.remove('hidden', 'text-red-500');
     nitStatus.classList.add('text-green-500');
-    
+
+    // Mostrar plazo de pago bajo el total
+    const plazoPago = document.getElementById('plazoPago');
+    if (plazoPago) {
+        plazoPago.textContent = `Pago a ${datosDescuento.plazo} días`;
+    }
+
     // Recalcular
     calcularSubtotal();
 }
@@ -379,7 +385,8 @@ async function enviarFormulario(e) {
         valorNc: getNumericValue(valorNcInput),
         valorPp: getNumericValue(valorPpInput),
         subtotal: parseCurrency(subtotalDisplay.textContent.replace('$', '')),
-        elaboradoPor: elaboradoPorInput.value  // Responsable del registro
+        elaboradoPor: elaboradoPorInput.value,  // Responsable del registro
+        plazo: datosDescuento.plazo || 30       // Plazo de pago para el recibo
     };
     
     console.log('Datos a enviar:', datos); // Para debugging
@@ -396,7 +403,7 @@ async function enviarFormulario(e) {
         
         // Con no-cors no podemos leer la respuesta, asumimos éxito
         // Mostrar modal de éxito
-        const pdfUrl = `https://docs.google.com/spreadsheets/d/1wZNH3j7ebm6v7hAcTTJVgXPP4Ffrrfi57KxnWAjWJOs/export?format=pdf&gid=1393302560&portrait=true&size=letter&fitw=true`;
+        const pdfUrl = `https://docs.google.com/spreadsheets/d/1wZNH3j7ebm6v7hAcTTJVgXPP4Ffrrfi57KxnWAjWJOs/export?format=pdf&gid=1393302560&portrait=true&size=letter&fitw=true&range=A1:I10`;
         btnDescargarRecibo.href = pdfUrl;
         
         modalExito.classList.remove('hidden');
@@ -440,20 +447,25 @@ function limpiarFormulario() {
     rfteInput.value = '0';
     ricaInput.value = '0';
     subtotalDisplay.textContent = '$ 0';
-    
+    // Limpiar plazo de pago
+    const plazoPago = document.getElementById('plazoPago');
+    if (plazoPago) {
+        plazoPago.textContent = '';
+    }
+
     // Resetear estado
     datosDescuento = { retencionFte: '', tarifaRetencion: 0, tarifaIca: 0, nombreContable: '', plazo: 30 };
-    
+
     // Ocultar estado NIT
     nitStatus.classList.add('hidden');
-    
+
     // Resetear campo Elaborado Por
     elaboradoPorInput.value = '';
-    
+
     // Establecer fecha actual
     const hoy = new Date().toISOString().split('T')[0];
     fechaFactInput.value = hoy;
-    
+
     // Establecer valores por defecto en campos de moneda
     valorNcInput.value = '0';
     valorPpInput.value = '0';
