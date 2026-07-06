@@ -112,11 +112,11 @@ Simplemente abre `index.html` en tu navegador (doble clic en el archivo).
 
 ## 📋 Lógica de Cálculos
 
-### Retenciones (se aplican si VALOR NETO > $1,414,098)
+### Retenciones (FTE se aplica si VALOR NETO > $523,740; ICA sigue en $1,414,098)
 
 | Campo | Fórmula |
 |-------|---------|
-| **R/FTE** | `SI Aplica R/FTE = "SI" Y VALOR NETO > 1414098 → (VALOR NETO - VALOR N.C) × TARIFA ÷ 100, sino 0` |
+| **R/FTE** | `SI Aplica R/FTE = "SI" Y VALOR NETO > 523740 → (VALOR NETO - VALOR N.C) × TARIFA ÷ 100, sino 0` |
 | **R/ICA** | `SI VALOR NETO > 1414098 → (VALOR NETO - VALOR N.C) × TARIFA ÷ 1000, sino 0` |
 
 ### Subtotal
@@ -149,7 +149,8 @@ SUBTOTAL = VALOR NETO + VALOR IVA - R/FTE - R/ICA - VALOR N.C - VALOR P.P
 - **Pestaña Facturas**: LISTA DE FACTURAS
 - **Pestaña Descuentos**: Descuentos  
 - **Pestaña Recibo**: Recibo
-- **Umbral de retención**: $1,414,098
+- **Umbral FTE**: $523,740
+- **Umbral ICA**: $1,414,098
 
 ---
 

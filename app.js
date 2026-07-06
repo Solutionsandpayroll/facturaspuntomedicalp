@@ -5,7 +5,7 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKCWmQf8NRzQ2o
 
 // Umbrales para aplicar retenciones (valor UVT = 52374)
 const UMBRAL_ICA = 52374 * 27;  // 27 UVT
-const UMBRAL_FTE = UMBRAL_ICA;  // FTE usa el mismo umbral de ICA
+const UMBRAL_FTE = 52374 * 10;  // 10 UVT
 
 // ============================================
 // ELEMENTOS DEL DOM
@@ -156,7 +156,7 @@ function calcularRetenciones() {
                                    datosDescuento.retencionFte === 'Permanente';
     
     if (esSuperaBaseOPermanente && !esAutoretenedor) {
-        // R/FTE aplica si valor neto > 27 UVT
+        // R/FTE aplica si valor neto > 10 UVT
         if (valorNeto > UMBRAL_FTE) {
             rfte = (valorNeto - valorNc) * tarifaRetencion / 100;
         }
